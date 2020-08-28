@@ -7,19 +7,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
+import org.springframework.data.mongodb.core.ReactiveMongoOperations;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.SimpleReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 @Configuration
-@EnableReactiveMongoRepositories
-public class DataConfig extends AbstractReactiveMongoConfiguration {
-    @Bean
-    public MongoClient mongoClient() {
-        return MongoClients.create();
-    }
+@Import(EmbeddedMongoAutoConfiguration.class)
+public class DataConfig  {
+   public static final String DATABASE_NAME = "reservations";
 
-    @Override
-    protected String getDatabaseName() {
-        return "reactive";
-    }
+   @Bean
+   public ReactiveMongoDatabaseFactory mongoDatabaseFactory(MongoClient mongoClient){
+      return new SimpleReactiveMongoDatabaseFactory(mongoClient,DATABASE_NAME);
+   }
+
+
+   @Bean
+   public ReactiveMongoOperations reactiveMongoTemplate(ReactiveMongoDatabaseFactory reactiveMongoDatabaseFactory){
+      return new ReactiveMongoTemplate(reactiveMongoDatabaseFactory);
+   }
 }
