@@ -1,3 +1,3 @@
 # ReactiveProgramming
 
-Created Crud Opeartion for hotelReservation using Embeded MongoDb and Reactive Spring lobraries.
+Created Crud opeartions for Hotel Reservation application using Embeded MongoDb and Reactive Spring libraries.
